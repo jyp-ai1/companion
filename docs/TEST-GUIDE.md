@@ -1,6 +1,7 @@
 # MVP 테스트 가이드 (비개발자용)
 
-배포 URL: **https://companion-sandy.vercel.app**
+배포 URL: **jyp-ai1 Vercel Dashboard → companion → Production URL**  
+(자세한 내용: [docs/DEPLOY.md](DEPLOY.md))
 
 ---
 
@@ -16,9 +17,9 @@
 ### B. Supabase URL 설정
 
 1. **Authentication** → **URL Configuration**
-2. **Site URL**: `https://companion-sandy.vercel.app`
+2. **Site URL**: jyp-ai1 Production URL (Vercel Dashboard에서 확인)
 3. **Redirect URLs**에 추가:
-   - `https://companion-sandy.vercel.app/**`
+   - `https://YOUR-URL.vercel.app/**`
 
 ### C. SQL 마이그레이션
 
@@ -34,7 +35,7 @@ Supabase **SQL Editor**에서 아래 파일 순서대로 Run:
 
 ### 1️⃣ 회원가입 (Sprint 1)
 
-1. https://companion-sandy.vercel.app 접속
+1. jyp-ai1 Production URL 접속
 2. **시작하기** 클릭
 3. 이름, 휴대폰, 이메일, 비밀번호 입력 → **가입하기**
 4. 연령대, 지역 선택 → **다음**

@@ -6,7 +6,7 @@
 
 - **Frontend:** Next.js 16 + TypeScript + Tailwind CSS v4
 - **Backend:** Supabase (Auth, PostgreSQL, RLS)
-- **Deployment:** Vercel
+- **Deployment:** Vercel (**jyp-ai1/companion** — [배포 가이드](docs/DEPLOY.md))
 
 ## Quick Start
 
