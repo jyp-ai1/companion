@@ -7,9 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
 
-export default function SignupPage() {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,28 +19,18 @@ export default function SignupPage() {
     setLoading(true);
 
     const supabase = createClient();
-    const { data, error: signUpError } = await supabase.auth.signUp({
+    const { error: loginError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (signUpError) {
-      setError(signUpError.message);
+    if (loginError) {
+      setError(loginError.message);
       setLoading(false);
       return;
     }
 
-    if (data.user) {
-      await supabase
-        .from("user_profiles")
-        .update({
-          display_name: name,
-          phone,
-        })
-        .eq("id", data.user.id);
-    }
-
-    window.location.href = "/onboarding/profile";
+    window.location.href = "/home";
   }
 
   return (
@@ -51,33 +39,14 @@ export default function SignupPage() {
         ← 홈으로
       </Link>
       <Card className="mx-auto w-full max-w-md">
-        <h1 className="mb-2 text-center">함께할 친구를 찾아볼까요?</h1>
-        <p className="mb-8 text-center text-gray-600">
-          가입부터 결과까지 약 3분이면 충분합니다.
-        </p>
+        <h1 className="mb-8 text-center">다시 만나서 반가워요</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <Input
-            label="이름"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            placeholder="홍길동"
-          />
-          <Input
-            label="휴대폰"
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-            placeholder="010-0000-0000"
-          />
           <Input
             label="이메일"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            placeholder="example@email.com"
           />
           <Input
             label="비밀번호"
@@ -85,25 +54,18 @@ export default function SignupPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            minLength={6}
-            placeholder="6자 이상"
           />
           {error && (
             <p className="rounded-xl bg-red-50 p-3 text-red-700">{error}</p>
           )}
           <Button type="submit" disabled={loading} className="w-full">
-            {loading ? "가입 중..." : "가입하기"}
+            {loading ? "로그인 중..." : "로그인"}
           </Button>
         </form>
         <p className="mt-6 text-center text-gray-600">
-          이미 계정이 있으신가요?{" "}
-          <Link href="/login" className="font-semibold text-brand-600 underline">
-            로그인
-          </Link>
-        </p>
-        <p className="mt-4 text-center text-sm text-gray-500">
-          <Link href="/privacy" className="underline">
-            개인정보 처리방침
+          계정이 없으신가요?{" "}
+          <Link href="/signup" className="font-semibold text-brand-600 underline">
+            가입하기
           </Link>
         </p>
       </Card>

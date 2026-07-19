@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 
@@ -36,7 +37,7 @@ export default function Home() {
             <span className="text-xl font-bold text-brand-700">이음</span>
           </div>
           <span className="rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700">
-            Sprint 0
+            MVP
           </span>
         </div>
       </header>
@@ -152,7 +153,11 @@ export default function Home() {
       <footer className="border-t border-brand-100 bg-white px-6 py-8">
         <div className="mx-auto max-w-5xl text-center text-sm text-gray-500">
           <p>© 2026 이음 (Companion) · Age-Tech AI Platform</p>
-          <p className="mt-1">Sprint 0 — Foundation</p>
+          <p className="mt-1">
+            <Link href="/login" className="underline">
+              로그인
+            </Link>
+          </p>
         </div>
       </footer>
     </div>

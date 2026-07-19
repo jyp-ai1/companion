@@ -33,9 +33,15 @@ npm run dev
 | 4 | ⏳ | 참여 & 피드백 |
 | 5 | ⏳ | Admin & 실증 준비 |
 
-## Setup Guide
+## Documentation
 
-자세한 설정 방법은 [docs/SETUP.md](docs/SETUP.md) 참고.
+| 문서 | 내용 |
+|------|------|
+| [docs/PRD.md](docs/PRD.md) | Project AGEZERO MVP 전체 명세 |
+| [docs/IEUM-TYPE-DESIGN.md](docs/IEUM-TYPE-DESIGN.md) | 이음 타입 12문항·점수·추천 알고리즘 |
+| [docs/UX-WIREFRAME.md](docs/UX-WIREFRAME.md) | 시니어 UX 화면별 와이어프레임 |
+| [docs/MVP-VALIDATION-PLAN.md](docs/MVP-VALIDATION-PLAN.md) | 파일럿 검증·KPI·정부지원 증거 데이터 |
+| [docs/SETUP.md](docs/SETUP.md) | Supabase/Vercel 설정 가이드 |
 
 ## Database
 
