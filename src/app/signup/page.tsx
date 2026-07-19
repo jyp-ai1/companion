@@ -44,7 +44,9 @@ export default function SignupPage() {
       const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
       const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
       if (!url || !key) {
-        setError("서버 설정 오류입니다. Supabase 환경변수를 확인해 주세요.");
+        setError(
+          "Supabase 연결 설정이 없습니다. Vercel → Settings → Environment Variables에 URL/Key를 추가한 뒤 Redeploy(재배포)해 주세요.",
+        );
         return;
       }
 
