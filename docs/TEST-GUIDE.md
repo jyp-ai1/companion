@@ -6,10 +6,27 @@
 
 ## ⚠️ 테스트 전 필수 (1회만)
 
-Supabase SQL Editor에서 **아직 안 했다면** 아래 파일 순서대로 Run:
+### A. Supabase 이메일 확인 끄기 (가장 중요!)
 
-1. `supabase/migrations/20260719000001_seed_data.sql` (seed만 아직이면 001+002도)
-2. `supabase/migrations/20260719000002_sprint1_6_features.sql` ← **새로 추가됨**
+1. Supabase Dashboard → **Authentication** → **Providers** → **Email**
+2. **Confirm email** 스위치를 **OFF** 로 변경 → Save
+
+> 켜져 있으면 가입 후 "가입 중..."에서 멈추거나 이메일 확인을 기다려야 합니다.
+
+### B. Supabase URL 설정
+
+1. **Authentication** → **URL Configuration**
+2. **Site URL**: `https://companion-sandy.vercel.app`
+3. **Redirect URLs**에 추가:
+   - `https://companion-sandy.vercel.app/**`
+
+### C. SQL 마이그레이션
+
+Supabase **SQL Editor**에서 아래 파일 순서대로 Run:
+
+1. `20260719000001_seed_data.sql` (seed)
+2. `20260719000002_sprint1_6_features.sql`
+3. `20260719000003_signup_fix.sql` ← **새로 추가**
 
 ---
 

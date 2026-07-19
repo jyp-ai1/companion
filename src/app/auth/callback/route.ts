@@ -8,7 +8,12 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient();
-    await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+      return NextResponse.redirect(
+        `${origin}/login?error=${encodeURIComponent("이메일 확인 후 다시 로그인해 주세요.")}`,
+      );
+    }
   }
 
   return NextResponse.redirect(`${origin}${next}`);

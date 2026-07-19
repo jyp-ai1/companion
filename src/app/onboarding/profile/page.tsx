@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -19,33 +20,49 @@ const REGIONS = [
 const GENDERS = ["남성", "여성", "선택 안 함"];
 
 export default function OnboardingProfilePage() {
+  const router = useRouter();
   const [ageGroup, setAgeGroup] = useState("");
   const [region, setRegion] = useState("");
   const [gender, setGender] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!ageGroup || !region) return;
     setLoading(true);
+    setError("");
 
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) return;
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        setError("로그인이 필요합니다. 다시 로그인해 주세요.");
+        return;
+      }
 
-    await supabase
-      .from("user_profiles")
-      .update({
-        age_group: ageGroup,
-        region,
-        gender: gender || null,
-        onboarding_completed: true,
-      })
-      .eq("id", user.id);
+      const { error: updateError } = await supabase
+        .from("user_profiles")
+        .update({
+          age_group: ageGroup,
+          region,
+          gender: gender || null,
+          onboarding_completed: true,
+        })
+        .eq("id", user.id);
 
-    window.location.href = "/test";
+      if (updateError) {
+        setError("저장에 실패했습니다. Supabase SQL 마이그레이션을 확인해 주세요.");
+        return;
+      }
+
+      router.push("/test");
+      router.refresh();
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -122,6 +139,9 @@ export default function OnboardingProfilePage() {
             >
               {loading ? "저장 중..." : "다음 — 이음 타입 테스트"}
             </Button>
+            {error && (
+              <p className="rounded-xl bg-red-50 p-3 text-red-700">{error}</p>
+            )}
           </form>
         </Card>
       </div>
