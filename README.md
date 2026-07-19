@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 이음 (Companion) — Age-Tech AI Platform
 
-## Getting Started
+50~75세를 위한 AI 기반 활동·친구 매칭 플랫폼.
 
-First, run the development server:
+## Tech Stack
+
+- **Frontend:** Next.js 16 + TypeScript + Tailwind CSS v4
+- **Backend:** Supabase (Auth, PostgreSQL, RLS)
+- **Deployment:** Vercel
+
+## Quick Start
 
 ```bash
+# 의존성 설치
+npm install
+
+# 환경변수 설정
+cp .env.local.example .env.local
+# .env.local에 Supabase URL/Key 입력
+
+# 개발 서버
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Sprint Progress
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Sprint | Status | Description |
+|--------|--------|-------------|
+| 0 | ✅ Done | Foundation, DB schema, Landing |
+| 1 | 🔜 Next | Auth & Onboarding |
+| 2 | ⏳ | AI 이음 타입 테스트 |
+| 3 | ⏳ | 모임 & Rule-based 추천 |
+| 4 | ⏳ | 참여 & 피드백 |
+| 5 | ⏳ | Admin & 실증 준비 |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Setup Guide
 
-## Learn More
+자세한 설정 방법은 [docs/SETUP.md](docs/SETUP.md) 참고.
 
-To learn more about Next.js, take a look at the following resources:
+## Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Supabase CLI로 마이그레이션 적용
+npx supabase db push
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+마이그레이션 파일:
+- `supabase/migrations/20260719000000_initial_schema.sql` — 테이블 + RLS
+- `supabase/migrations/20260719000001_seed_data.sql` — 12문항 + 16유형 + 샘플 모임
