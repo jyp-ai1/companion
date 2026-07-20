@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const DEMO_NAV = [
-  { href: "/demo/home", label: "Home", icon: "🏠" },
-  { href: "/demo/discover", label: "Discover", icon: "✨" },
-  { href: "/demo/together", label: "Together", icon: "❤️" },
-  { href: "/demo/activity", label: "Activity", icon: "📅" },
-  { href: "/demo/memory", label: "Memory", icon: "📸" },
+  { href: "/demo/home", label: "홈", icon: "🏠" },
+  { href: "/demo/discover", label: "둘러보기", icon: "🔍" },
+  { href: "/demo/together", label: "함께", icon: "❤️" },
+  { href: "/demo/activity", label: "내 활동", icon: "📅" },
+  { href: "/demo/memory", label: "마이", icon: "👤" },
 ];
 
 export function DemoBottomNav() {

@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
-  { href: "/home", label: "Home", icon: "🏠", match: ["/home"] },
-  { href: "/recommend", label: "Discover", icon: "✨", match: ["/recommend", "/people"] },
-  { href: "/together", label: "Together", icon: "❤️", match: ["/together"] },
-  { href: "/my", label: "Activity", icon: "📅", match: ["/my", "/schedule"] },
-  { href: "/my/profile", label: "My", icon: "👤", match: ["/my/profile"] },
+  { href: "/home", label: "홈", icon: "🏠", match: ["/home"] },
+  { href: "/browse", label: "둘러보기", icon: "🔍", match: ["/browse", "/people"] },
+  { href: "/together", label: "함께", icon: "❤️", match: ["/together"] },
+  { href: "/my", label: "내 활동", icon: "📅", match: ["/my", "/schedule"] },
+  { href: "/my/profile", label: "마이", icon: "👤", match: ["/my/profile"] },
 ];
 
 export function BottomNav() {
@@ -21,13 +21,14 @@ export function BottomNav() {
           const active = match.some((m) => {
             if (m === "/my/profile") return pathname === m;
             if (m === "/my") return pathname === "/my" || pathname.startsWith("/schedule");
+            if (m === "/browse") return pathname === "/browse" || pathname.startsWith("/browse/") || pathname.startsWith("/people");
             return pathname === m || pathname.startsWith(`${m}/`);
           });
           return (
             <Link
               key={href}
               href={href}
-              className={`flex min-h-[56px] min-w-[52px] flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 text-[11px] font-medium transition-colors sm:text-xs ${
+              className={`flex min-h-[56px] min-w-[48px] flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 text-[10px] font-medium sm:text-[11px] ${
                 active ? "text-brand-700" : "text-gray-500 hover:text-brand-600"
               }`}
             >
@@ -44,9 +45,11 @@ export function BottomNav() {
 export function AppShell({
   children,
   title,
+  headerSubtitle,
 }: {
   children: React.ReactNode;
   title?: string;
+  headerSubtitle?: string;
 }) {
   return (
     <div className="flex min-h-full flex-col pb-24">
@@ -59,9 +62,11 @@ export function AppShell({
           {title ? (
             <span className="text-lg font-semibold text-gray-700">{title}</span>
           ) : (
-            <span className="text-sm font-medium text-brand-600">Today For You</span>
+            <span className="text-sm font-medium text-brand-600">
+              {headerSubtitle ?? "오늘 둘러볼 거리"}
+            </span>
           )}
-          <Link href="/search" className="text-2xl" aria-label="검색">
+          <Link href="/browse" className="min-h-[48px] min-w-[48px] text-center text-2xl leading-[48px]" aria-label="둘러보기">
             🔍
           </Link>
         </div>
