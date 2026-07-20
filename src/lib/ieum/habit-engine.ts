@@ -49,6 +49,15 @@ export type MicroAction = {
 
 export type TodayCardType = "question" | "micro" | "open";
 
+export const DAILY_MOODS = [
+  { value: "calm", label: "차분해요", emoji: "🍃" },
+  { value: "light", label: "가벼워요", emoji: "☀️" },
+  { value: "social", label: "만나고 싶어요", emoji: "💬" },
+  { value: "active", label: "움직이고 싶어요", emoji: "⚡" },
+] as const;
+
+export type DailyMood = (typeof DAILY_MOODS)[number]["value"];
+
 export function getTodayQuestion(day = new Date()): DailyQuestion {
   const idx = day.getDate() % QUESTION_POOL.length;
   return QUESTION_POOL[idx];

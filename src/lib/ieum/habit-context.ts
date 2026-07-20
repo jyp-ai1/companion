@@ -28,7 +28,8 @@ export async function getHabitContext() {
     .select("interest_slug")
     .eq("user_id", user.id);
 
-  const topInterest = interests?.[0]?.interest_slug ?? "walk";
+  const interestSlugs = (interests ?? []).map((i) => i.interest_slug);
+  const topInterest = interestSlugs[0] ?? "walk";
   const today = new Date();
   const cardType = getTodayCardType(today);
   const question = getTodayQuestion(today);
@@ -121,12 +122,26 @@ export async function getHabitContext() {
     });
   }
 
+  const { answer: questionAnswer, mood: questionMood } = (() => {
+    const raw = answeredQ?.answer ?? null;
+    if (!raw) return { answer: null, mood: null };
+    try {
+      const parsed = JSON.parse(raw) as { a?: string; m?: string };
+      if (parsed.a) return { answer: parsed.a, mood: parsed.m ?? null };
+    } catch {
+      /* legacy */
+    }
+    return { answer: raw, mood: null };
+  })();
+
   return {
     profile,
     cardType,
     question,
     micro,
-    questionAnswered: answeredQ?.answer ?? null,
+    questionAnswered: questionAnswer,
+    questionMood,
+    interestSlugs,
     microAnswered: answeredM?.response ?? null,
     openActivities,
     topOpen: openActivities[0] ?? null,

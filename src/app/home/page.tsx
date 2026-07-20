@@ -1,12 +1,9 @@
 import Link from "next/link";
 import { AppShell } from "@/components/AppShell";
 import { DailyMessageCard } from "@/components/emotional/EmotionalUI";
-import {
-  ActivityCard,
-  ActivityCardHorizontal,
-  InterestChip,
-} from "@/components/browse/ActivityCard";
-import { BrowseSearchForm, QuickCategoryScroll } from "@/components/browse/BrowseFilters";
+import { ActivityCard, ActivityCardHorizontal } from "@/components/browse/ActivityCard";
+import { DailyCheckInCard } from "@/components/home/DailyCheckInCard";
+import { HomeDiscoverFilter } from "@/components/home/HomeDiscoverFilter";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import {
@@ -21,14 +18,22 @@ import {
 } from "@/lib/browse/catalog";
 import { BROWSE_REGIONS } from "@/lib/browse/types";
 import { getDailyMessage } from "@/lib/ieum/daily-messages";
-import { INTEREST_TAGS } from "@/lib/ieum/interests";
 import { getHabitContext } from "@/lib/ieum/habit-context";
+import { getPersonalizedTodayPicks } from "@/lib/ieum/personalized-home";
 
 export default async function HomePage() {
   const habit = await getHabitContext();
   if (!habit) return null;
 
-  const { profile } = habit;
+  const {
+    profile,
+    question,
+    questionAnswered,
+    questionMood,
+    interestSlugs,
+  } = habit;
+
+  const displayName = profile?.display_name ?? "회원";
   const dailyMessage = getDailyMessage();
   const greeting = getGreeting();
   const popular = getPopularToday(8);
@@ -37,26 +42,76 @@ export default async function HomePage() {
   const reviews = getPopularReviews(4);
   const userRegion = profile?.region?.split(" ").pop() ?? "하남";
 
+  const personalized = getPersonalizedTodayPicks({
+    interestSlugs,
+    questionAnswer: questionAnswered,
+    mood: questionMood,
+    ieumCode: profile?.ieum_code ?? null,
+    dnaTitle: profile?.dna_title ?? null,
+    region: profile?.region ?? null,
+  });
+
   return (
     <AppShell headerSubtitle="오늘 둘러볼 거리">
       <div className="space-y-12 md:space-y-16">
         <DailyMessageCard message={dailyMessage} />
 
-        {/* Hero */}
+        {/* Hero — 검색 + 관심사 필터 */}
         <section className="animate-fade-in-up">
           <h1 className="text-2xl font-bold leading-snug">
             {greeting},
             <br />
-            {profile?.display_name ?? "회원"}님.
+            {displayName}님.
           </h1>
           <p className="mt-2 text-lg text-warm-gray">오늘은 무엇을 함께 해볼까요?</p>
-          <div className="mt-4">
-            <BrowseSearchForm />
-            <QuickCategoryScroll />
+          <HomeDiscoverFilter />
+        </section>
+
+        {/* 오늘 질문 + 기분 */}
+        <section>
+          <DailyCheckInCard
+            question={question}
+            savedAnswer={questionAnswered}
+            savedMood={questionMood}
+            dnaTitle={profile?.dna_title ?? null}
+          />
+        </section>
+
+        {/* OOO님의 오늘 추천 */}
+        <section>
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold">✨ {displayName}님의 오늘 추천</h2>
+              {profile?.dna_title && (
+                <p className="mt-1 text-sm text-warm-gray">
+                  {profile.dna_title}
+                  {profile.ieum_code ? ` · ${profile.ieum_code}` : ""}
+                </p>
+              )}
+            </div>
+            <Link href="/browse?sort=ai" className="text-sm text-brand-600 underline">
+              더보기
+            </Link>
+          </div>
+          {!questionAnswered || !questionMood ? (
+            <Card className="border-dashed border-brand-200 bg-brand-50/40 text-center">
+              <p className="text-warm-gray">
+                오늘 질문과 기분을 선택하면 더 잘 맞는 활동을 추천해 드려요.
+              </p>
+            </Card>
+          ) : null}
+          <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {personalized.map((a) => (
+              <ActivityCard
+                key={a.id}
+                activity={{ ...a, aiReason: a.personalReason }}
+                showAiReason
+              />
+            ))}
           </div>
         </section>
 
-        {/* Section 1 — 오늘 인기 */}
+        {/* 오늘 인기 */}
         <section>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-bold">🔥 오늘 많이 함께하는 활동</h2>
@@ -71,33 +126,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Section 2 — 관심사 그리드 */}
-        <section>
-          <h2 className="mb-4 text-xl font-bold">관심사로 발견하기</h2>
-          <div className="-mx-1 flex gap-3 overflow-x-auto pb-2 hide-scrollbar lg:mx-0 lg:flex-wrap lg:overflow-visible">
-            {INTEREST_TAGS.map((tag) => (
-              <InterestChip
-                key={tag.slug}
-                slug={tag.slug}
-                label={tag.label}
-                emoji={tag.emoji}
-                href={`/browse?cat=${tag.slug}`}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Section 3 — AI 추천 */}
-        <section>
-          <h2 className="mb-4 text-xl font-bold">✨ AI 추천 · Today For You</h2>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {weekly.slice(0, 3).map((a) => (
-              <ActivityCard key={a.id} activity={a} showAiReason />
-            ))}
-          </div>
-        </section>
-
-        {/* Section 4 — 이번 주 추천 */}
+        {/* 이번 주 추천 */}
         <section>
           <h2 className="mb-4 text-xl font-bold">이번 주 추천</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -107,7 +136,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Section 5 — 이번 주 많이 본 활동 */}
+        {/* 이번 주 많이 본 활동 */}
         <section>
           <h2 className="mb-4 text-xl font-bold">👀 이번 주 많이 본 활동</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -117,7 +146,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Section 6 — 새로 올라온 함께하기 */}
+        {/* 새로 올라온 함께하기 */}
         <section>
           <h2 className="mb-4 text-xl font-bold">🌿 오늘 새로 올라온 함께하기</h2>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -127,7 +156,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Section 6 — 인기 후기 */}
+        {/* 이번 주 후기 */}
         <section>
           <h2 className="mb-4 text-xl font-bold">💬 이번 주 후기</h2>
           <div className="grid gap-4 md:grid-cols-2">
@@ -152,7 +181,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Section 7 — 지역별 */}
+        {/* 지역별 */}
         <section>
           <h2 className="mb-4 text-xl font-bold">📍 지역별 추천</h2>
           <div className="mb-4 flex flex-wrap gap-2">
@@ -173,7 +202,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Section 8 — 오늘 가입한 사람 */}
+        {/* 오늘 새로 온 이웃 */}
         <section>
           <h2 className="mb-4 text-xl font-bold">🌱 오늘 새로 온 이웃</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -195,7 +224,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Section 9 — Memory */}
+        {/* Memory */}
         <section>
           <h2 className="mb-4 text-xl font-bold">📸 오늘의 추억</h2>
           <Card className="border-2 border-brand-200 bg-gradient-to-br from-brand-50 to-accent-50/30">
@@ -208,7 +237,6 @@ export default async function HomePage() {
           </Card>
         </section>
 
-        {/* Footer CTA */}
         <section className="pb-4">
           <Button href="/invite" className="w-full">
             오늘 함께하기 만들기

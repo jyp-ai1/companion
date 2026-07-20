@@ -98,7 +98,7 @@ export function InterestChip({
   href?: string;
 }) {
   const content = (
-    <span className="flex min-h-[76px] min-w-[76px] shrink-0 flex-col items-center justify-center rounded-2xl border border-brand-100 bg-white px-3 py-2 shadow-sm transition-colors hover:border-brand-300 hover:bg-brand-50 md:min-h-[84px] md:min-w-[84px]">
+    <span className="flex min-h-[76px] w-full flex-col items-center justify-center rounded-2xl border border-brand-100 bg-white px-1 py-2 shadow-sm transition-colors hover:border-brand-300 hover:bg-brand-50">
       <span className="text-2xl">{emoji}</span>
       <span className="mt-1 text-sm font-medium">{label}</span>
     </span>

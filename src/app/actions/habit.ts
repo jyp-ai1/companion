@@ -35,6 +35,37 @@ export async function recordDailyCheckin() {
   }
 }
 
+export async function submitDailyCheckIn(
+  questionKey: string,
+  answer: string,
+  mood: string,
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "로그인 필요" };
+
+  const payload = JSON.stringify({ a: answer, m: mood });
+
+  const { error } = await supabase.from("daily_question_responses").upsert({
+    user_id: user.id,
+    question_key: questionKey,
+    answer: payload,
+    response_date: new Date().toISOString().slice(0, 10),
+  });
+
+  await logRecommendationEvent(supabase, user.id, {
+    event_type: "click",
+    item_type: "feed",
+    item_id: `daily_checkin:${answer}:${mood}`,
+    metadata: { question_key: questionKey, answer, mood },
+  });
+
+  revalidatePath("/home");
+  return error ? { error: "저장 실패" } : { ok: true };
+}
+
 export async function submitDailyQuestion(questionKey: string, answer: string) {
   const supabase = await createClient();
   const {
