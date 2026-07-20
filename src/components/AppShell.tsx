@@ -51,8 +51,8 @@ function NavLink({
         href={href}
         className={`rounded-full px-4 py-2 text-[15px] font-medium transition-colors ${
           active
-            ? "bg-black text-white"
-            : "text-[#212121] hover:bg-neutral-100"
+            ? "bg-brand-600 text-white"
+            : "text-brand-800 hover:bg-brand-50"
         }`}
       >
         {label}
@@ -64,7 +64,7 @@ function NavLink({
     <Link
       href={href}
       className={`flex min-h-[56px] min-w-[48px] flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 text-[10px] font-medium sm:text-[11px] ${
-        active ? "text-black" : "text-neutral-500 hover:text-black"
+        active ? "text-brand-700" : "text-gray-500 hover:text-brand-600"
       }`}
     >
       <span className="text-xl">{icon}</span>
@@ -110,7 +110,7 @@ export function AppShell({
         <div className={SHELL_HEADER_INNER}>
           <Link href="/home" className="flex shrink-0 items-center gap-2">
             <span className="text-2xl">🌿</span>
-            <span className="text-xl font-bold text-black">이음</span>
+            <span className="text-xl font-bold text-brand-700">이음</span>
           </Link>
 
           <nav className={SHELL_DESKTOP_NAV} aria-label="주요 메뉴">
@@ -128,17 +128,17 @@ export function AppShell({
 
           <div className="flex shrink-0 items-center gap-2">
             {title ? (
-              <span className="hidden text-base font-semibold text-[#212121] md:inline lg:hidden">
+              <span className="hidden text-base font-semibold text-gray-700 md:inline lg:hidden">
                 {title}
               </span>
             ) : (
-              <span className="hidden text-sm font-medium text-neutral-500 md:inline lg:hidden">
+              <span className="hidden text-sm font-medium text-brand-600 md:inline lg:hidden">
                 {headerSubtitle ?? "오늘 둘러볼 거리"}
               </span>
             )}
             <Link
               href="/browse"
-              className="touch-target rounded-full text-center text-xl leading-[48px] hover:bg-neutral-100"
+              className="touch-target rounded-full text-center text-xl leading-[48px] hover:bg-brand-50"
               aria-label="둘러보기"
             >
               🔍

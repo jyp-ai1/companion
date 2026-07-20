@@ -41,37 +41,34 @@ export default function Home() {
         <div className={SHELL_HEADER_INNER}>
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl">🌿</span>
-            <span className="text-xl font-bold text-black">이음</span>
+            <span className="text-xl font-bold text-brand-700">이음</span>
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
             {NAV_LINKS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-full px-4 py-2 text-[15px] font-medium text-[#212121] hover:bg-neutral-100"
+                className="rounded-full px-4 py-2 text-[15px] font-medium text-brand-800 hover:bg-brand-50"
               >
                 {item.label}
               </Link>
             ))}
           </nav>
-          <Link
-            href="/login"
-            className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-neutral-800"
-          >
+          <Button href="/login" size="md" className="!min-h-[44px] !px-5 !text-sm">
             로그인
-          </Link>
+          </Button>
         </div>
       </header>
 
-      <section className="relative overflow-hidden bg-[#fff7f7] px-4 py-14 md:px-6 md:py-20 lg:px-8 lg:py-24">
+      <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-accent-50/30 to-background px-4 py-14 md:px-6 md:py-20 lg:px-8 lg:py-24">
         <div className="mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="animate-fade-in-up text-center lg:text-left">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-accent-600 md:text-base">
+            <p className="mb-4 text-lg font-medium text-brand-600">
               관심사로 이어지는 동행
             </p>
-            <h1 className="mb-6 whitespace-pre-line">
+            <h1 className="mb-6 whitespace-pre-line text-foreground">
               오늘도{"\n"}
-              <span className="text-black">누군가와 함께</span>라면{"\n"}
+              <span className="text-brand-600">누군가와 함께</span>라면{"\n"}
               더 좋은 하루가 됩니다.
             </h1>
             <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-warm-gray lg:mx-0">
@@ -136,12 +133,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-black px-4 py-16 text-white md:px-6 lg:px-8 lg:py-20">
+      <section className="bg-gradient-to-br from-brand-600 to-brand-700 px-4 py-16 text-white md:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto w-full max-w-3xl text-center">
           <h2 className="mb-4 whitespace-pre-line text-white">
             여기 한번{"\n"}써보고 싶다.
           </h2>
-          <p className="mb-8 text-lg text-neutral-300">
+          <p className="mb-8 text-lg text-brand-100">
             30초면 첫 동행을 둘러볼 수 있어요.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -149,7 +146,7 @@ export default function Home() {
               href="/welcome"
               variant="secondary"
               size="lg"
-              className="bg-white text-black hover:bg-neutral-100"
+              className="bg-white text-brand-700 hover:bg-brand-50"
             >
               시작하기
             </Button>
@@ -165,7 +162,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-neutral-200 bg-white px-4 py-8 md:px-6 lg:px-8">
+      <footer className="border-t border-brand-100 bg-white px-4 py-8 md:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-7xl text-center text-sm text-warm-gray">
           <p>© 2026 이음 — 관심사로 이어지는 동행</p>
         </div>

@@ -60,7 +60,7 @@ export default async function HomePage() {
         <section>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-bold">🔥 오늘 많이 함께하는 활동</h2>
-            <Link href="/browse?sort=popular" className="text-sm text-[#212121] underline">
+            <Link href="/browse?sort=popular" className="text-sm text-brand-600 underline">
               더보기
             </Link>
           </div>
@@ -133,7 +133,7 @@ export default async function HomePage() {
           <div className="grid gap-4 md:grid-cols-2">
             {reviews.map((a) => (
               <Link key={a.id} href={`/browse/${a.id}`}>
-                <Card className="border-neutral-200">
+                <Card className="border-brand-100">
                   <div className="flex gap-3">
                     <span className="text-3xl">{a.emoji}</span>
                     <div>
@@ -141,7 +141,7 @@ export default async function HomePage() {
                       <p className="mt-1 text-sm text-gray-700">
                         &ldquo;{a.reviewSnippet}&rdquo;
                       </p>
-                      <p className="mt-2 text-xs text-neutral-600">
+                      <p className="mt-2 text-xs text-brand-600">
                         {a.reviewAuthor} · {a.hostBadge} · 후기 {a.reviewCount}개
                       </p>
                     </div>
@@ -160,7 +160,7 @@ export default async function HomePage() {
               <Link
                 key={r}
                 href={`/browse?region=${encodeURIComponent(r)}`}
-                className="rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-[#212121] hover:border-black"
+                className="rounded-full bg-brand-50 px-4 py-2 text-sm font-medium text-brand-800"
               >
                 {r}
               </Link>
@@ -178,9 +178,9 @@ export default async function HomePage() {
           <h2 className="mb-4 text-xl font-bold">🌱 오늘 새로 온 이웃</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {getNewMembersToday(5).map((m) => (
-              <Card key={m.id} className="border-neutral-200">
+              <Card key={m.id} className="border-brand-100">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#fff7f7] text-2xl">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-50 text-2xl">
                     {m.emoji}
                   </span>
                   <div>
@@ -198,8 +198,8 @@ export default async function HomePage() {
         {/* Section 9 — Memory */}
         <section>
           <h2 className="mb-4 text-xl font-bold">📸 오늘의 추억</h2>
-          <Card className="border border-neutral-200 bg-[#fff7f7]">
-            <p className="text-sm text-accent-600">Memory</p>
+          <Card className="border-2 border-brand-200 bg-gradient-to-br from-brand-50 to-accent-50/30">
+            <p className="text-sm text-brand-600">Memory</p>
             <p className="mt-2 text-lg font-bold">함께한 시간은 추억으로 남습니다</p>
             <p className="mt-2 text-warm-gray">첫 동행 후 여기에 오늘의 기록이 쌓여요</p>
             <Button href="/demo/memory" variant="outline" size="md" className="mt-4">

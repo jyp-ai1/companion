@@ -26,8 +26,8 @@ const EXTRA_OPTIONS = [
 
 function pillClass(active: boolean) {
   return active
-    ? "bg-black text-white border-black"
-    : "bg-white text-[#212121] border-neutral-200 hover:border-neutral-400";
+    ? "bg-brand-600 text-white border-brand-600"
+    : "bg-white text-brand-800 border-brand-100 hover:border-brand-300";
 }
 
 export function BrowseFilters() {
@@ -146,7 +146,7 @@ export function BrowseSearchForm({ defaultQ }: { defaultQ?: string }) {
         name="q"
         defaultValue={defaultQ}
         placeholder="무엇을 하고 싶으세요?"
-        className="min-h-[52px] w-full rounded-full border border-neutral-300 bg-white px-5 pr-12 text-base focus:border-black focus:outline-none md:text-lg"
+        className="min-h-[52px] w-full rounded-2xl border-2 border-brand-100 bg-white px-5 pr-12 text-lg focus:border-brand-400 focus:outline-none"
       />
       <button
         type="submit"
@@ -167,7 +167,7 @@ export function QuickCategoryScroll() {
         <Link
           key={c.slug}
           href={`/browse?cat=${c.slug}`}
-          className="shrink-0 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-[#212121] transition-colors hover:border-black"
+          className="shrink-0 rounded-full border border-brand-100 bg-brand-50 px-4 py-2 text-sm font-medium text-brand-800 transition-colors hover:border-brand-300 hover:bg-brand-100"
         >
           {c.emoji} {c.label}
         </Link>

@@ -17,7 +17,7 @@ export function DemoBanner() {
         </p>
         <a
           href="/signup"
-          className="shrink-0 rounded-full bg-black px-3 py-1 text-xs font-semibold text-white"
+          className="shrink-0 rounded-full bg-brand-600 px-3 py-1 text-xs font-semibold text-white"
         >
           가입하기
         </a>

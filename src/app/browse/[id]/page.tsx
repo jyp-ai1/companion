@@ -36,13 +36,13 @@ export default async function BrowseActivityDetailPage({
 
   return (
     <AppShell title="활동">
-      <Link href="/browse" className="mb-4 inline-block text-sm font-medium text-[#212121] underline">
+      <Link href="/browse" className="mb-4 inline-block text-brand-600">
         ← 둘러보기
       </Link>
 
       <div className="lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
         <div>
-          <div className="mb-6 flex h-48 items-center justify-center rounded-2xl bg-[#fff7f7] text-7xl md:h-56 lg:h-72">
+          <div className="mb-6 flex h-48 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-100 to-accent-50 text-7xl md:h-56 lg:h-72">
             {activity.emoji}
           </div>
 
@@ -50,14 +50,14 @@ export default async function BrowseActivityDetailPage({
           <p className="mt-2 text-lg text-warm-gray">{activity.description}</p>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            <span className="rounded-full border border-neutral-200 px-3 py-1 text-sm">
+            <span className="rounded-full bg-brand-50 px-3 py-1 text-sm">
               {getInterestLabel(activity.interestSlug)}
             </span>
             {activity.isFree && (
-              <span className="rounded-full bg-black px-3 py-1 text-sm text-white">무료</span>
+              <span className="rounded-full bg-brand-50 px-3 py-1 text-sm">무료</span>
             )}
             {activity.beginnerFriendly && (
-              <span className="rounded-full bg-accent-500 px-3 py-1 text-sm text-white">
+              <span className="rounded-full bg-accent-50 px-3 py-1 text-sm text-accent-600">
                 초보 환영
               </span>
             )}
@@ -79,7 +79,7 @@ export default async function BrowseActivityDetailPage({
               {[activity.emoji, "🌿", "☀️"].map((e, i) => (
                 <div
                   key={i}
-                  className="flex aspect-square items-center justify-center rounded-xl bg-[#fff7f7] text-3xl"
+                  className="flex aspect-square items-center justify-center rounded-xl bg-brand-50 text-3xl"
                 >
                   {e}
                 </div>
@@ -107,8 +107,8 @@ export default async function BrowseActivityDetailPage({
           </Card>
 
           {activity.aiReason && (
-            <Card className="mt-4 bg-[#fff7f7]">
-              <p className="text-sm font-medium text-accent-600">✨ AI 추천 이유</p>
+            <Card className="mt-4 bg-brand-50">
+              <p className="text-sm font-medium text-brand-600">✨ AI 추천 이유</p>
               <p className="mt-2">{activity.aiReason}</p>
             </Card>
           )}
@@ -121,7 +121,7 @@ export default async function BrowseActivityDetailPage({
           <Card className="mt-4">
             <p className="font-semibold">함께할 호스트</p>
             <p className="mt-2">{activity.hostLabel}</p>
-            <p className="mt-1 text-neutral-700">{activity.hostBadge}</p>
+            <p className="mt-1 text-brand-700">{activity.hostBadge}</p>
           </Card>
 
           <Card className="mt-4">

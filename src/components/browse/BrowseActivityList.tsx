@@ -43,7 +43,7 @@ export function BrowseActivityList({
   return (
     <div>
       {isFallback && (
-        <p className="mb-4 rounded-2xl bg-[#fff7f7] px-4 py-3 text-sm text-[#212121]">
+        <p className="mb-4 rounded-2xl bg-brand-50 px-4 py-3 text-sm text-brand-800">
           선택한 조건에 맞는 활동이 없어 AI 추천 활동을 보여드려요.
         </p>
       )}

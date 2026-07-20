@@ -31,7 +31,7 @@ export function DemoBottomNav() {
               key={href}
               href={href}
               className={`flex min-h-[56px] min-w-[48px] flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 text-[10px] font-medium sm:text-[11px] ${
-                active ? "text-black" : "text-neutral-500"
+                active ? "text-brand-700" : "text-gray-500"
               }`}
             >
               <span className="text-lg">{icon}</span>
@@ -59,7 +59,7 @@ export function DemoShell({
         <div className={SHELL_HEADER_INNER}>
           <Link href="/demo/home" className="flex items-center gap-2">
             <span className="text-2xl">🌿</span>
-            <span className="text-xl font-bold text-black">이음</span>
+            <span className="text-xl font-bold text-brand-700">이음</span>
           </Link>
 
           <nav className={SHELL_DESKTOP_NAV} aria-label="데모 메뉴">
@@ -70,7 +70,7 @@ export function DemoShell({
                   key={href}
                   href={href}
                   className={`rounded-full px-4 py-2 text-[15px] font-medium ${
-                    active ? "bg-black text-white" : "text-[#212121] hover:bg-neutral-100"
+                    active ? "bg-brand-600 text-white" : "text-brand-800 hover:bg-brand-50"
                   }`}
                 >
                   {label}
