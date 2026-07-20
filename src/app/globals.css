@@ -1,21 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf8f5;
-  --foreground: #1a1a1a;
-  --brand-50: #eef7f2;
-  --brand-100: #d4ede0;
-  --brand-200: #a8dbc1;
-  --brand-500: #2d9a6a;
-  --brand-600: #247a55;
-  --brand-700: #1c6144;
-  --brand-800: #154a34;
-  --accent-50: #fff7ed;
-  --accent-100: #ffedd5;
-  --accent-500: #ea8a3c;
-  --accent-600: #d97706;
-  --warm-gray: #6b6560;
-  --success: #4ade80;
+  --background: #ffffff;
+  --foreground: #212121;
+  --muted: #757575;
+  --border: #e5e5e5;
+  --surface-soft: #fff7f7;
+  --brand-50: #fafafa;
+  --brand-100: #f5f5f5;
+  --brand-200: #e5e5e5;
+  --brand-500: #212121;
+  --brand-600: #000000;
+  --brand-700: #000000;
+  --brand-800: #000000;
+  --accent-50: #fff0f6;
+  --accent-100: #ffe0ef;
+  --accent-500: #ff107d;
+  --accent-600: #e6006e;
+  --warm-gray: #757575;
+  --success: #22c55e;
 }
 
 @theme inline {
@@ -42,33 +45,47 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-size: 18px;
-  line-height: 1.75;
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
+@media (min-width: 768px) {
+  body {
+    font-size: 17px;
+    line-height: 1.65;
+  }
+}
+
 h1 {
-  font-size: 2rem;
+  font-size: 1.75rem;
   line-height: 1.35;
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--foreground);
 }
 
 h2 {
-  font-size: 1.5rem;
-  line-height: 1.45;
-  font-weight: 600;
+  font-size: 1.375rem;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--foreground);
 }
 
 h3 {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   line-height: 1.45;
   font-weight: 600;
+  color: var(--foreground);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   h1 {
-    font-size: 2.75rem;
+    font-size: 2.25rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
   }
 }
 
@@ -102,14 +119,22 @@ h3 {
   animation: slide-in 0.35s ease-out forwards;
 }
 
-/* WCAG AA — focus visible */
 :focus-visible {
-  outline: 3px solid var(--brand-500);
+  outline: 3px solid var(--accent-500);
   outline-offset: 2px;
 }
 
-/* Minimum touch target helper */
 .touch-target {
   min-height: 48px;
   min-width: 48px;
+}
+
+/* Sinol-style horizontal scroll hide scrollbar on desktop grid fallback */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }

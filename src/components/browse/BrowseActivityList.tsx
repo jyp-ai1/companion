@@ -43,11 +43,11 @@ export function BrowseActivityList({
   return (
     <div>
       {isFallback && (
-        <p className="mb-4 rounded-xl bg-brand-50 px-4 py-3 text-sm text-brand-800">
+        <p className="mb-4 rounded-2xl bg-[#fff7f7] px-4 py-3 text-sm text-[#212121]">
           선택한 조건에 맞는 활동이 없어 AI 추천 활동을 보여드려요.
         </p>
       )}
-      <div className="flex flex-col gap-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {items.map((a) => (
           <ActivityCard key={a.id} activity={a} showAiReason />
         ))}

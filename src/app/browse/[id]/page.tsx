@@ -36,106 +36,117 @@ export default async function BrowseActivityDetailPage({
 
   return (
     <AppShell title="활동">
-      <Link href="/browse" className="mb-4 inline-block text-brand-600">
+      <Link href="/browse" className="mb-4 inline-block text-sm font-medium text-[#212121] underline">
         ← 둘러보기
       </Link>
 
-      {/* Hero */}
-      <div className="mb-6 flex h-40 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-100 to-accent-50 text-7xl">
-        {activity.emoji}
-      </div>
+      <div className="lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
+        <div>
+          <div className="mb-6 flex h-48 items-center justify-center rounded-2xl bg-[#fff7f7] text-7xl md:h-56 lg:h-72">
+            {activity.emoji}
+          </div>
 
-      <h1 className="text-2xl font-bold">{activity.title}</h1>
-      <p className="mt-2 text-lg text-warm-gray">{activity.description}</p>
+          <h1 className="text-2xl font-bold md:text-3xl">{activity.title}</h1>
+          <p className="mt-2 text-lg text-warm-gray">{activity.description}</p>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        <span className="rounded-full bg-brand-50 px-3 py-1 text-sm">
-          {getInterestLabel(activity.interestSlug)}
-        </span>
-        {activity.isFree && (
-          <span className="rounded-full bg-brand-50 px-3 py-1 text-sm">무료</span>
-        )}
-        {activity.beginnerFriendly && (
-          <span className="rounded-full bg-accent-50 px-3 py-1 text-sm text-accent-600">
-            초보 환영
-          </span>
-        )}
-      </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="rounded-full border border-neutral-200 px-3 py-1 text-sm">
+              {getInterestLabel(activity.interestSlug)}
+            </span>
+            {activity.isFree && (
+              <span className="rounded-full bg-black px-3 py-1 text-sm text-white">무료</span>
+            )}
+            {activity.beginnerFriendly && (
+              <span className="rounded-full bg-accent-500 px-3 py-1 text-sm text-white">
+                초보 환영
+              </span>
+            )}
+          </div>
 
-      <Card className="mt-6">
-        <ul className="space-y-3 text-lg">
-          <li>📅 {when}</li>
-          <li>📍 {activity.locationName} · {activity.region}</li>
-          <li>⏱ {activity.durationMinutes}분 · {DIFFICULTY_LABEL[activity.difficulty]}</li>
-          <li>👥 참여 {activity.participantCount}/{activity.maxParticipants}명</li>
-          <li>💬 후기 {activity.reviewCount}개</li>
-        </ul>
-      </Card>
+          {activity.reviewSnippet && (
+            <Card className="mt-6">
+              <p className="font-semibold">후기</p>
+              <p className="mt-3 text-gray-700">&ldquo;{activity.reviewSnippet}&rdquo;</p>
+              <p className="mt-2 text-sm text-warm-gray">
+                {activity.reviewAuthor} · 후기 {activity.reviewCount}개
+              </p>
+            </Card>
+          )}
 
-      {activity.aiReason && (
-        <Card className="mt-4 bg-brand-50">
-          <p className="text-sm font-medium text-brand-600">✨ AI 추천 이유</p>
-          <p className="mt-2">{activity.aiReason}</p>
-        </Card>
-      )}
-
-      <Card className="mt-4">
-        <p className="font-semibold">준비물</p>
-        <p className="mt-2 text-warm-gray">{activity.supplies.join(" · ")}</p>
-      </Card>
-
-      <Card className="mt-4">
-        <p className="font-semibold">함께할 호스트</p>
-        <p className="mt-2">{activity.hostLabel}</p>
-        <p className="mt-1 text-brand-700">{activity.hostBadge}</p>
-      </Card>
-
-      {activity.reviewSnippet && (
-        <Card className="mt-4">
-          <p className="font-semibold">후기</p>
-          <p className="mt-3 text-gray-700">&ldquo;{activity.reviewSnippet}&rdquo;</p>
-          <p className="mt-2 text-sm text-warm-gray">
-            {activity.reviewAuthor} · 후기 {activity.reviewCount}개
-          </p>
-        </Card>
-      )}
-
-      <Card className="mt-4">
-        <p className="font-semibold">함께한 순간</p>
-        <div className="mt-3 grid grid-cols-3 gap-2">
-          {[activity.emoji, "🌿", "☀️"].map((e, i) => (
-            <div
-              key={i}
-              className="flex aspect-square items-center justify-center rounded-xl bg-brand-50 text-3xl"
-            >
-              {e}
+          <Card className="mt-4">
+            <p className="font-semibold">함께한 순간</p>
+            <div className="mt-3 grid grid-cols-3 gap-2 md:grid-cols-4">
+              {[activity.emoji, "🌿", "☀️"].map((e, i) => (
+                <div
+                  key={i}
+                  className="flex aspect-square items-center justify-center rounded-xl bg-[#fff7f7] text-3xl"
+                >
+                  {e}
+                </div>
+              ))}
             </div>
-          ))}
+            <p className="mt-2 text-xs text-gray-400">예시 사진</p>
+          </Card>
         </div>
-        <p className="mt-2 text-xs text-gray-400">예시 사진</p>
-      </Card>
 
-      <Card className="mt-4">
-        <p className="font-semibold">같이 참여할 사람</p>
-        <p className="mt-2 text-warm-gray">
-          {activity.participantCount}명이 참여 중 · {activity.hostBadge}
-        </p>
-        <Button href="/people" variant="outline" size="md" className="mt-4 w-full">
-          동행 찾기
-        </Button>
-      </Card>
+        <div className="mt-8 lg:mt-0">
+          <Card>
+            <ul className="space-y-3 text-base md:text-lg">
+              <li>📅 {when}</li>
+              <li>
+                📍 {activity.locationName} · {activity.region}
+              </li>
+              <li>
+                ⏱ {activity.durationMinutes}분 · {DIFFICULTY_LABEL[activity.difficulty]}
+              </li>
+              <li>
+                👥 참여 {activity.participantCount}/{activity.maxParticipants}명
+              </li>
+              <li>💬 후기 {activity.reviewCount}개</li>
+            </ul>
+          </Card>
 
-      <div className="mt-8 flex flex-col gap-3">
-        <Button href={`/invite`} className="w-full">
-          함께하기 신청
-        </Button>
-        <Button href="/people" variant="outline" className="w-full">
-          같이할 사람 찾기
-        </Button>
+          {activity.aiReason && (
+            <Card className="mt-4 bg-[#fff7f7]">
+              <p className="text-sm font-medium text-accent-600">✨ AI 추천 이유</p>
+              <p className="mt-2">{activity.aiReason}</p>
+            </Card>
+          )}
+
+          <Card className="mt-4">
+            <p className="font-semibold">준비물</p>
+            <p className="mt-2 text-warm-gray">{activity.supplies.join(" · ")}</p>
+          </Card>
+
+          <Card className="mt-4">
+            <p className="font-semibold">함께할 호스트</p>
+            <p className="mt-2">{activity.hostLabel}</p>
+            <p className="mt-1 text-neutral-700">{activity.hostBadge}</p>
+          </Card>
+
+          <Card className="mt-4">
+            <p className="font-semibold">같이 참여할 사람</p>
+            <p className="mt-2 text-warm-gray">
+              {activity.participantCount}명이 참여 중 · {activity.hostBadge}
+            </p>
+            <Button href="/people" variant="outline" size="md" className="mt-4 w-full">
+              동행 찾기
+            </Button>
+          </Card>
+
+          <div className="mt-6 flex flex-col gap-3">
+            <Button href="/invite" className="w-full">
+              함께하기 신청
+            </Button>
+            <Button href="/people" variant="outline" className="w-full">
+              같이할 사람 찾기
+            </Button>
+          </div>
+        </div>
       </div>
 
-      <h2 className="mb-4 mt-10 text-lg font-bold">비슷한 활동</h2>
-      <div className="flex flex-col gap-3">
+      <h2 className="mb-4 mt-12 text-lg font-bold">비슷한 활동</h2>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {similar.map((a) => (
           <ActivityCard key={a.id} activity={a} compact />
         ))}
