@@ -1,8 +1,7 @@
 import { AppShell } from "@/components/AppShell";
 import { CompatibilityBreakdownView } from "@/components/discovery/CompatibilityBreakdown";
 import { CommonGroundCard, SimilarPersonRow } from "@/components/interest/InterestCards";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { DemoEmptyPeople } from "@/components/demo/DemoEmptyFallback";
 import { getPeerDisplayLabels } from "@/lib/ieum/anonymous-context";
 import { COPY } from "@/lib/copy";
 import { getUserDiscoveryContext } from "@/lib/ieum/user-context";
@@ -35,12 +34,7 @@ export default async function PeoplePage() {
       <p className="mb-6 text-sm text-gray-500">{COPY.anonymousNote}</p>
 
       {similarWithCompat.length === 0 ? (
-        <Card className="text-center">
-          <p className="text-gray-600">아직 비슷한 사람 데이터가 없습니다.</p>
-          <Button href="/test" className="mt-4">
-            이음 코드 만들기
-          </Button>
-        </Card>
+        <DemoEmptyPeople />
       ) : (
         <>
           {similarWithCompat[0] && (

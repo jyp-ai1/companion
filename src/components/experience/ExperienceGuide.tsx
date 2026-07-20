@@ -7,10 +7,12 @@ import {
   markExperienceGuideSeen,
   startDemoMode,
 } from "@/app/actions/experience";
-import { ExperienceIllustration } from "@/components/experience/ExperienceIllustrations";
+import { DeviceMockup, type MockupScreen } from "@/components/emotional/DeviceMockup";
 import { DemoDisclaimer } from "@/components/demo/DemoBanner";
 import { Button } from "@/components/ui/Button";
 import { EXPERIENCE_SCREENS, DEMO_STATS } from "@/lib/demo/experience-data";
+
+const MOCKUP_BY_STEP: MockupScreen[] = ["today", "today", "invite", "memory"];
 
 export function ExperienceGuide() {
   const router = useRouter();
@@ -30,10 +32,7 @@ export function ExperienceGuide() {
   }
 
   function next() {
-    if (!isLast) {
-      setStep((s) => s + 1);
-      return;
-    }
+    if (!isLast) setStep((s) => s + 1);
   }
 
   function finishSignup() {
@@ -50,7 +49,7 @@ export function ExperienceGuide() {
   }
 
   return (
-    <div className="flex min-h-full flex-col bg-gradient-to-b from-brand-50 to-white">
+    <div className="flex min-h-full flex-col bg-gradient-to-b from-brand-50 via-accent-50/20 to-white">
       <header className="flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-2">
           <span className="text-2xl">🌿</span>
@@ -61,7 +60,7 @@ export function ExperienceGuide() {
             type="button"
             onClick={skip}
             disabled={pending}
-            className="text-sm text-gray-500 underline"
+            className="min-h-[48px] px-2 text-sm text-warm-gray underline"
           >
             건너뛰기
           </button>
@@ -73,19 +72,22 @@ export function ExperienceGuide() {
           {EXPERIENCE_SCREENS.map((s, i) => (
             <span
               key={s.id}
-              className={`h-2 w-2 rounded-full ${
+              className={`h-2.5 w-2.5 rounded-full transition-colors ${
                 i === step ? "bg-brand-600" : "bg-brand-200"
               }`}
             />
           ))}
         </div>
 
-        <h1 className="whitespace-pre-line text-center text-2xl font-bold leading-snug">
+        <h1
+          key={`title-${step}`}
+          className="animate-slide-in whitespace-pre-line text-center text-2xl font-bold leading-snug"
+        >
           {screen.title}
         </h1>
 
-        <div className="my-8">
-          <ExperienceIllustration type={screen.illustration} />
+        <div key={`mockup-${step}`} className="animate-slide-in my-8">
+          <DeviceMockup screen={MOCKUP_BY_STEP[step]} />
         </div>
 
         {step === 0 && (
@@ -103,7 +105,10 @@ export function ExperienceGuide() {
           </p>
         )}
 
-        <p className="whitespace-pre-line text-center text-lg leading-relaxed text-gray-700">
+        <p
+          key={`desc-${step}`}
+          className="animate-fade-in-up whitespace-pre-line text-center text-lg leading-relaxed text-warm-gray"
+        >
           {screen.description}
         </p>
 
@@ -131,7 +136,7 @@ export function ExperienceGuide() {
               {isReplay && (
                 <Link
                   href="/my/profile"
-                  className="text-center text-sm text-gray-500 underline"
+                  className="text-center text-sm text-warm-gray underline"
                 >
                   프로필로 돌아가기
                 </Link>

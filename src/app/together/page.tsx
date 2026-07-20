@@ -5,6 +5,7 @@ import {
   SocialHealthCard,
 } from "@/components/together/TogetherCards";
 import { DemoEmptyTogether } from "@/components/demo/DemoEmptyFallback";
+import { EmptyState } from "@/components/emotional/EmotionalUI";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { getTogetherContext } from "@/lib/ieum/together-context";
@@ -83,7 +84,13 @@ export default async function TogetherPage() {
       <h2 className="mb-4 mt-10 text-lg font-bold">최근 함께한 활동</h2>
       <div className="flex flex-col gap-3">
         {recentActivities.length === 0 ? (
-          <Card><p className="text-gray-600">활동 기록이 없습니다.</p></Card>
+          <EmptyState
+            emoji="🌿"
+            title="아직 함께한 활동 기록이 없어요"
+            description="첫 동행이 시작되면, 여기에 추억이 쌓입니다."
+            ctaLabel="오늘 함께 걸어보실래요?"
+            ctaHref="/home"
+          />
         ) : (
           recentActivities.map((p) => {
             const m = p.meetups as {

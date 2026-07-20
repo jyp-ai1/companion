@@ -1,37 +1,43 @@
 import Link from "next/link";
 import { AppShell } from "@/components/AppShell";
+import { DailyMessageCard } from "@/components/emotional/EmotionalUI";
 import { OpenActivityCard, TodayHabitCard } from "@/components/habit/TodayHabitCard";
 import { Button } from "@/components/ui/Button";
 import { COPY } from "@/lib/copy";
+import { getDailyMessage } from "@/lib/ieum/daily-messages";
 import { getHabitContext } from "@/lib/ieum/habit-context";
 
 export default async function HomePage() {
   const habit = await getHabitContext();
   if (!habit) return null;
 
+  const dailyMessage = getDailyMessage();
   const { profile, cardType, question, micro, questionAnswered, microAnswered, openActivities, topOpen } =
     habit;
 
   return (
     <AppShell>
+      <DailyMessageCard message={dailyMessage} />
+
       <div className="mb-6">
-        <p className="text-sm font-medium text-brand-600">{COPY.brand}</p>
+        <p className="text-sm font-medium text-brand-600">🌿 {COPY.brandPromise}</p>
         <h1 className="mt-1 text-2xl font-bold">
           {profile?.display_name ?? "회원"}님, {COPY.tagline}
         </h1>
       </div>
 
       {!profile?.test_completed_at && (
-        <div className="mb-6 rounded-2xl border border-brand-200 bg-brand-50 p-4">
-          <p className="font-medium">3분만에 이음 코드를 만들어 주세요</p>
-          <Button href="/test" size="md" className="mt-3">
+        <div className="mb-6 rounded-2xl border border-accent-100 bg-accent-50 p-5">
+          <p className="text-lg font-medium">3분이면 나와 맞는 이웃을 찾아드려요</p>
+          <p className="mt-2 text-warm-gray">복잡하지 않아요. 천천히 시작해 보세요.</p>
+          <Button href="/test" size="md" className="mt-4">
             시작하기
           </Button>
         </div>
       )}
 
-      <section>
-        <p className="mb-3 text-sm text-gray-500">오늘 카드 · 하나만</p>
+      <section className="animate-fade-in-up">
+        <p className="mb-3 text-sm text-warm-gray">오늘 카드 · 하나만</p>
         <TodayHabitCard
           cardType={cardType}
           question={question}
@@ -61,33 +67,24 @@ export default async function HomePage() {
         <Button href="/invite" className="w-full">
           {COPY.togetherRequest} 만들기
         </Button>
-        <p className="mt-2 text-center text-xs text-gray-500">{COPY.anonymousNote}</p>
+        <p className="mt-2 text-center text-xs text-warm-gray">{COPY.anonymousNote}</p>
       </section>
 
       <nav className="mt-12 grid grid-cols-3 gap-3">
-        <Link
-          href="/recommend"
-          className="rounded-2xl bg-brand-50 py-4 text-center font-medium text-brand-800"
-        >
-          ✨ Discover
-        </Link>
-        <Link
-          href="/together"
-          className="rounded-2xl bg-brand-50 py-4 text-center font-medium text-brand-800"
-        >
-          ❤️ Together
-        </Link>
-        <Link
-          href="/my"
-          className="rounded-2xl bg-brand-50 py-4 text-center font-medium text-brand-800"
-        >
-          📅 Activity
-        </Link>
+        {[
+          { href: "/recommend", icon: "✨", label: "Discover" },
+          { href: "/together", icon: "❤️", label: "Together" },
+          { href: "/my", icon: "📅", label: "Activity" },
+        ].map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="flex min-h-[56px] items-center justify-center rounded-2xl bg-brand-50 py-4 text-center font-medium text-brand-800 transition-colors hover:bg-brand-100"
+          >
+            {item.icon} {item.label}
+          </Link>
+        ))}
       </nav>
-
-      <p className="mt-8 text-center text-xs text-gray-400">
-        푸시 알림(설계): 아침·오후·저녁 오늘의 이음 한 줄
-      </p>
     </AppShell>
   );
 }

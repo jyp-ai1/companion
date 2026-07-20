@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AppShell } from "@/components/AppShell";
 import { ActivityTabs } from "@/components/feed/ActivityTabs";
 import { DemoEmptyActivity } from "@/components/demo/DemoEmptyFallback";
+import { EmptyState } from "@/components/emotional/EmotionalUI";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -51,9 +52,13 @@ async function ActivityContent({ tab }: { tab: string }) {
     return (
       <div className="flex flex-col gap-4">
         {!completed.length ? (
-          <Card className="text-center">
-            <p className="text-gray-600">완료한 활동이 없습니다.</p>
-          </Card>
+          <EmptyState
+            emoji="📸"
+            title="아직 완료한 동행이 없어요"
+            description="첫 활동 후, 여기에 따뜻한 추억이 쌓입니다."
+            ctaLabel="오늘 함께 걸어보실래요?"
+            ctaHref="/recommend"
+          />
         ) : (
           completed.map((p) => {
             const m = p.meetups;

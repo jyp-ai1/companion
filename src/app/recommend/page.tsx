@@ -25,8 +25,8 @@ export default async function RecommendPage() {
   return (
     <AppShell title="Discover">
       <h1 className="mb-2 text-2xl font-bold">Discover</h1>
-      <p className="mb-6 text-gray-600">
-        Spotify처럼 — 나와 맞는 관심사와 사람을 발견합니다
+      <p className="mb-6 text-lg text-warm-gray">
+        오늘 가장 잘 맞는 활동과 이웃을 찾아드립니다.
       </p>
 
       <Card className="bg-brand-50">

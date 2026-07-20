@@ -1,15 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf9f7;
+  --background: #faf8f5;
   --foreground: #1a1a1a;
-  --brand-50: #f0f7f4;
-  --brand-100: #d9ede5;
-  --brand-200: #b3dbc9;
-  --brand-500: #3d9970;
-  --brand-600: #2d7a56;
-  --brand-700: #236344;
-  --brand-800: #1a4d34;
+  --brand-50: #eef7f2;
+  --brand-100: #d4ede0;
+  --brand-200: #a8dbc1;
+  --brand-500: #2d9a6a;
+  --brand-600: #247a55;
+  --brand-700: #1c6144;
+  --brand-800: #154a34;
+  --accent-50: #fff7ed;
+  --accent-100: #ffedd5;
+  --accent-500: #ea8a3c;
+  --accent-600: #d97706;
+  --warm-gray: #6b6560;
+  --success: #4ade80;
 }
 
 @theme inline {
@@ -22,6 +28,12 @@
   --color-brand-600: var(--brand-600);
   --color-brand-700: var(--brand-700);
   --color-brand-800: var(--brand-800);
+  --color-accent-50: var(--accent-50);
+  --color-accent-100: var(--accent-100);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-warm-gray: var(--warm-gray);
+  --color-success: var(--success);
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
     system-ui, sans-serif;
 }
@@ -31,30 +43,73 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   font-size: 18px;
-  line-height: 1.7;
+  line-height: 1.75;
   -webkit-font-smoothing: antialiased;
 }
 
 h1 {
   font-size: 2rem;
-  line-height: 1.3;
+  line-height: 1.35;
   font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 h2 {
   font-size: 1.5rem;
-  line-height: 1.4;
+  line-height: 1.45;
   font-weight: 600;
 }
 
 h3 {
   font-size: 1.25rem;
-  line-height: 1.4;
+  line-height: 1.45;
   font-weight: 600;
 }
 
 @media (min-width: 768px) {
   h1 {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
   }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.45s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.35s ease-out forwards;
+}
+
+/* WCAG AA — focus visible */
+:focus-visible {
+  outline: 3px solid var(--brand-500);
+  outline-offset: 2px;
+}
+
+/* Minimum touch target helper */
+.touch-target {
+  min-height: 48px;
+  min-width: 48px;
 }
