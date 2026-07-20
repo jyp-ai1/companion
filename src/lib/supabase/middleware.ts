@@ -10,9 +10,11 @@ function getSupabaseEnv() {
 
 export async function updateSession(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const publicPaths = ["/", "/login", "/signup", "/privacy"];
+  const publicPaths = ["/", "/login", "/signup", "/privacy", "/welcome"];
+  const isDemo = path.startsWith("/demo");
+  const isInvite = path.startsWith("/invite");
   const isPublic =
-    publicPaths.includes(path) || path.startsWith("/auth/");
+    publicPaths.includes(path) || path.startsWith("/auth/") || isInvite || isDemo;
 
   const env = getSupabaseEnv();
   if (!env) {
@@ -48,6 +50,14 @@ export async function updateSession(request: NextRequest) {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
+    const guideSeen = request.cookies.get("ieum_guide_seen")?.value === "1";
+
+    if (!user && path === "/" && !guideSeen) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/welcome";
+      return NextResponse.redirect(url);
+    }
 
     if (!user && !isPublic) {
       const url = request.nextUrl.clone();

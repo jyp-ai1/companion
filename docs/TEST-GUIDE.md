@@ -1,7 +1,6 @@
 # MVP 테스트 가이드 (비개발자용)
 
-배포 URL: **jyp-ai1 Vercel Dashboard → companion → Production URL**  
-(자세한 내용: [docs/DEPLOY.md](DEPLOY.md))
+배포 URL: **https://companion-two-sepia.vercel.app** (jyp-ai2/companion)
 
 ---
 

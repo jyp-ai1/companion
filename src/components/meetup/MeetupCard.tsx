@@ -49,7 +49,7 @@ export function MeetupCard({
           href={link}
           className="mt-2 inline-flex min-h-[52px] items-center justify-center rounded-2xl bg-brand-600 px-6 text-lg font-semibold text-white hover:bg-brand-700"
         >
-          자세히 보기
+          함께하기
         </Link>
       )}
     </Card>

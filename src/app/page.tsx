@@ -5,25 +5,25 @@ import { Card } from "@/components/ui/Card";
 const features = [
   {
     emoji: "🌿",
-    title: "이음 타입 테스트",
-    description: "12개의 간단한 질문으로 나의 생활 유형을 알아보세요.",
+    title: "함께하기 요청",
+    description: "예약·채팅 없이, 오늘 같이 걸을 사람을 찾아요.",
   },
   {
-    emoji: "🤝",
-    title: "맞춤 모임 추천",
-    description: "내 유형에 맞는 활동과 모임을 바로 추천해 드립니다.",
+    emoji: "🔒",
+    title: "Anonymous First",
+    description: "이름 대신 연령·지역·관심사만. 활동 후 상호 동의 시 공개.",
   },
   {
-    emoji: "💬",
-    title: "함께하는 친구",
-    description: "비슷한 관심사를 가진 사람들과 자연스럽게 연결됩니다.",
+    emoji: "💌",
+    title: "AI 초대 문구",
+    description: "부담 없는 초대 문구를 자동으로 만들어 드립니다.",
   },
 ];
 
 const steps = [
-  { num: "1", text: "회원가입 (1분)" },
-  { num: "2", text: "이음 타입 테스트 (2분)" },
-  { num: "3", text: "추천 모임 참여" },
+  { num: "1", text: "관심사로 이음 코드 (3분)" },
+  { num: "2", text: "함께하기 요청 만들기" },
+  { num: "3", text: "함께한 뒤 프로필 공개" },
 ];
 
 export default function Home() {
@@ -46,28 +46,31 @@ export default function Home() {
       <section className="bg-gradient-to-b from-brand-50 to-background px-6 py-16 md:py-24">
         <div className="mx-auto max-w-3xl text-center">
           <p className="mb-4 text-lg font-medium text-brand-600">
-            Age-Tech AI 플랫폼
+            관심사로 이어지는 동행
           </p>
           <h1 className="mb-6 text-foreground">
-            나와 잘 맞는
+            오늘,
             <br />
-            <span className="text-brand-600">활동과 친구</span> 찾기
+            <span className="text-brand-600">함께할 사람</span>을 찾아요
           </h1>
           <p className="mx-auto mb-10 max-w-xl text-xl text-gray-600">
-            12개의 간단한 질문으로 나의 생활 유형을 알아보고,
+            이름보다 관심사. 예약보다 초대.
             <br className="hidden sm:block" />
-            맞춤 모임을 추천받으세요.
+            30초면 오늘의 동행을 시작할 수 있어요.
           </p>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Button href="/signup" size="lg">
               시작하기
+            </Button>
+            <Button href="/demo/home" variant="outline" size="lg">
+              먼저 둘러보기
             </Button>
             <Button href="#how-it-works" variant="outline" size="lg">
               어떻게 작동하나요?
             </Button>
           </div>
           <p className="mt-6 text-base text-gray-500">
-            가입부터 결과까지 약 3분 · 50~75세를 위한 서비스
+            가입부터 첫 동행까지 약 3분 · 부담 없는 Anonymous First
           </p>
         </div>
       </section>
@@ -108,7 +111,7 @@ export default function Home() {
       {/* Type preview */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="mb-4">나의 이음 타입은?</h2>
+          <h2 className="mb-4">나의 이음 코드는?</h2>
           <p className="mb-8 text-gray-600">
             4가지 생활 축으로 16가지 유형을 분석합니다
           </p>
@@ -136,7 +139,7 @@ export default function Home() {
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="mb-4 text-white">지금 바로 시작해 보세요</h2>
           <p className="mb-8 text-lg text-brand-100">
-            나에게 맞는 활동과 친구가 기다리고 있습니다.
+            혼자 들어왔다가, 함께 나갑니다.
           </p>
           <Button
             href="/signup"

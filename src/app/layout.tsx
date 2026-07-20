@@ -2,10 +2,10 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "이음 — 나와 잘 맞는 활동과 친구 찾기",
+  title: "이음 — 관심사로 이어지는 동행",
   description:
-    "50~75세를 위한 Age-Tech AI 플랫폼. 이음 타입 테스트로 나에게 맞는 모임과 친구를 찾아보세요.",
-  keywords: ["시니어", "모임", "친구", "활동", "Age-Tech", "이음"],
+    "관심사로 이어지는 동행 서비스. 이음 코드로 나와 맞는 사람과 가볍게 함께해요.",
+  keywords: ["동행", "관심사", "함께하기", "커뮤니티", "이음"],
 };
 
 export const viewport: Viewport = {

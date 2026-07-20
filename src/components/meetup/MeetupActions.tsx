@@ -89,7 +89,7 @@ export function MeetupActions({
         </Button>
         {canReview && !hasReview && (
           <Button href={`/meetups/${meetupId}/review`} className="w-full">
-            후기 작성하기
+            활동 후기 남기기
           </Button>
         )}
       </div>

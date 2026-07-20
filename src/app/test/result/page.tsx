@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { rankMeetups } from "@/lib/ieum/recommend";
-import type { Meetup, MeetupCategory, TypeDefinition } from "@/lib/types";
+import { getInterestEmoji, getInterestLabel, interestsToCategories } from "@/lib/ieum/interests";
+import type { Meetup } from "@/lib/types";
 import { Header } from "@/components/Header";
 import { MeetupCard } from "@/components/meetup/MeetupCard";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { InterestDNAChip } from "@/components/interest/InterestCards";
 
 async function getParticipantCount(meetupId: string) {
   const supabase = await createClient();
@@ -29,34 +31,27 @@ export default async function TestResultPage() {
     .eq("id", user.id)
     .single();
 
-  if (!profile?.type_code) {
+  const { data: interestRows } = await supabase
+    .from("user_interests")
+    .select("interest_slug")
+    .eq("user_id", user.id);
+
+  const myInterests = interestRows?.map((r) => r.interest_slug) ?? [];
+
+  if (!profile?.test_completed_at) {
     return (
       <div className="flex flex-1 items-center justify-center px-6">
         <Card className="text-center">
-          <p>아직 테스트를 완료하지 않으셨어요.</p>
+          <p>아직 이음 코드를 만들지 않으셨어요.</p>
           <Button href="/test" className="mt-4">
-            테스트 시작
+            시작하기
           </Button>
         </Card>
       </div>
     );
   }
 
-  const { data: typeDef } = await supabase
-    .from("type_definitions")
-    .select("*")
-    .eq("type_code", profile.type_code)
-    .single();
-
-  const typed = typeDef as TypeDefinition | null;
-
-  const { data: rules } = await supabase
-    .from("type_category_rules")
-    .select("category, priority")
-    .eq("type_code", profile.type_code)
-    .order("priority");
-
-  const categories = (rules?.map((r) => r.category) ?? []) as MeetupCategory[];
+  const categories = interestsToCategories(myInterests);
 
   const { data: allMeetups } = await supabase
     .from("meetups")
@@ -67,55 +62,65 @@ export default async function TestResultPage() {
     (allMeetups as Meetup[]) ?? [],
     categories,
     profile.region,
-    5,
+    3,
   );
 
-  const counts = await Promise.all(
-    recommended.map((m) => getParticipantCount(m.id)),
-  );
+  const counts = await Promise.all(recommended.map((m) => getParticipantCount(m.id)));
 
   return (
     <div className="flex flex-1 flex-col">
       <Header />
       <main className="mx-auto w-full max-w-lg px-6 py-10">
         <Card className="text-center">
-          <div className="text-5xl">{typed?.emoji ?? "🌿"}</div>
-          <h1 className="mt-4">{typed?.title ?? profile.type_code}입니다</h1>
-          <p className="mt-4 text-lg text-gray-600">
-            {typed?.description ?? "나에게 맞는 활동을 찾아보세요."}
+          <div className="text-5xl">🧬</div>
+          <p className="mt-4 text-sm font-medium text-brand-600">나의 이음 코드</p>
+          <h1 className="mt-2 text-2xl font-bold">{profile.dna_title ?? "이음 회원"}</h1>
+          <p className="mt-2 font-mono text-lg text-brand-700">
+            {profile.ieum_code ?? "—"}
           </p>
-          {typed?.recommendations && (
-            <p className="mt-4 text-brand-700">
-              추천 활동: {typed.recommendations.join(" · ")}
-            </p>
+          <p className="mt-4 text-gray-600">
+            관심사와 생활 방식을 바탕으로 만들어졌습니다.
+          </p>
+          {myInterests.length > 0 && (
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              {myInterests.map((slug) => (
+                <InterestDNAChip key={slug} slug={slug} active />
+              ))}
+            </div>
           )}
         </Card>
 
-        <h2 className="mb-4 mt-10 text-xl font-semibold">이번 주 추천</h2>
+        <h2 className="mb-4 mt-10 text-xl font-semibold">나와 비슷한 사람들이 좋아하는 활동</h2>
+        <div className="flex flex-wrap gap-2">
+          {myInterests.slice(0, 4).map((slug) => (
+            <span
+              key={slug}
+              className="rounded-2xl border-2 border-brand-100 px-4 py-3 font-medium"
+            >
+              {getInterestEmoji(slug)} {getInterestLabel(slug)}
+            </span>
+          ))}
+        </div>
+
+        <h2 className="mb-4 mt-10 text-xl font-semibold">이번 주 추천 모임</h2>
         <div className="flex flex-col gap-4">
           {recommended.length === 0 ? (
             <Card>
-              <p className="text-gray-600">
-                곧 {profile.region} 지역에 새로운 모임이 열립니다.
-              </p>
-              <Link href="/meetups" className="mt-4 inline-block text-brand-600 underline">
-                전체 모임 보기
-              </Link>
+              <p className="text-gray-600">곧 새로운 모임이 열립니다.</p>
             </Card>
           ) : (
             recommended.map((m, i) => (
-              <MeetupCard
-                key={m.id}
-                meetup={m}
-                participantCount={counts[i]}
-              />
+              <MeetupCard key={m.id} meetup={m} participantCount={counts[i]} />
             ))
           )}
         </div>
 
-        <Button href="/home" variant="outline" className="mt-8 w-full">
-          홈으로 가기
+        <Button href="/home" className="mt-8 w-full">
+          홈에서 발견하기
         </Button>
+        <Link href="/people" className="mt-4 block text-center text-brand-600 underline">
+          비슷한 사람 둘러보기
+        </Link>
       </main>
     </div>
   );

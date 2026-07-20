@@ -6,30 +6,23 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { RegionPicker, formatRegion } from "@/components/RegionPicker";
 
 const AGE_GROUPS = ["50대", "60대", "70대", "75세 이상"];
-const REGIONS = [
-  "서울 강동",
-  "서울 송파",
-  "경기 하남",
-  "경기 성남",
-  "경기 광주",
-  "인천",
-  "기타",
-];
 const GENDERS = ["남성", "여성", "선택 안 함"];
 
 export default function OnboardingProfilePage() {
   const router = useRouter();
   const [ageGroup, setAgeGroup] = useState("");
-  const [region, setRegion] = useState("");
+  const [sido, setSido] = useState("");
+  const [sigungu, setSigungu] = useState("");
   const [gender, setGender] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!ageGroup || !region) return;
+    if (!ageGroup || !sido || !sigungu) return;
     setLoading(true);
     setError("");
 
@@ -47,14 +40,14 @@ export default function OnboardingProfilePage() {
         .from("user_profiles")
         .update({
           age_group: ageGroup,
-          region,
-          gender: gender || null,
+          region: formatRegion(sido, sigungu),
+          gender: gender && gender !== "선택 안 함" ? gender : null,
           onboarding_completed: true,
         })
         .eq("id", user.id);
 
       if (updateError) {
-        setError("저장에 실패했습니다. Supabase SQL 마이그레이션을 확인해 주세요.");
+        setError("저장에 실패했습니다.");
         return;
       }
 
@@ -83,7 +76,7 @@ export default function OnboardingProfilePage() {
                     key={g}
                     type="button"
                     onClick={() => setAgeGroup(g)}
-                    className={`min-h-[52px] rounded-2xl border-2 px-5 text-lg font-medium transition-colors ${
+                    className={`min-h-[52px] rounded-2xl border-2 px-5 text-lg font-medium ${
                       ageGroup === g
                         ? "border-brand-600 bg-brand-50 text-brand-800"
                         : "border-brand-100 bg-white text-gray-700"
@@ -94,25 +87,12 @@ export default function OnboardingProfilePage() {
                 ))}
               </div>
             </div>
-            <div>
-              <p className="mb-3 text-lg font-medium">거주 지역</p>
-              <div className="flex flex-col gap-3">
-                {REGIONS.map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setRegion(r)}
-                    className={`min-h-[52px] rounded-2xl border-2 px-5 text-left text-lg font-medium transition-colors ${
-                      region === r
-                        ? "border-brand-600 bg-brand-50 text-brand-800"
-                        : "border-brand-100 bg-white text-gray-700"
-                    }`}
-                  >
-                    {r}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <RegionPicker
+              sido={sido}
+              sigungu={sigungu}
+              onSidoChange={setSido}
+              onSigunguChange={setSigungu}
+            />
             <div>
               <p className="mb-3 text-lg font-medium">성별 (선택)</p>
               <div className="flex flex-wrap gap-3">
@@ -121,7 +101,7 @@ export default function OnboardingProfilePage() {
                     key={g}
                     type="button"
                     onClick={() => setGender(g === "선택 안 함" ? "" : g)}
-                    className={`min-h-[52px] rounded-2xl border-2 px-5 text-lg font-medium transition-colors ${
+                    className={`min-h-[52px] rounded-2xl border-2 px-5 text-lg font-medium ${
                       (gender === g || (g === "선택 안 함" && !gender))
                         ? "border-brand-600 bg-brand-50 text-brand-800"
                         : "border-brand-100 bg-white text-gray-700"
@@ -134,10 +114,10 @@ export default function OnboardingProfilePage() {
             </div>
             <Button
               type="submit"
-              disabled={!ageGroup || !region || loading}
+              disabled={!ageGroup || !sido || !sigungu || loading}
               className="w-full"
             >
-              {loading ? "저장 중..." : "다음 — 이음 타입 테스트"}
+              {loading ? "저장 중..." : "다음 — 이음 코드 만들기"}
             </Button>
             {error && (
               <p className="rounded-xl bg-red-50 p-3 text-red-700">{error}</p>

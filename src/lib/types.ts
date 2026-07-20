@@ -28,6 +28,8 @@ export interface UserProfile {
   birth_year: number | null;
   region: string | null;
   type_code: string | null;
+  ieum_code: string | null;
+  dna_title: string | null;
   activity_score: number;
   relationship_score: number;
   interest_score: number;

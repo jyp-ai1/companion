@@ -1,123 +1,93 @@
-import { createClient } from "@/lib/supabase/server";
-import { rankMeetups } from "@/lib/ieum/recommend";
-import type { Meetup, MeetupCategory, TypeDefinition } from "@/lib/types";
-import { Header } from "@/components/Header";
-import { MeetupCard } from "@/components/meetup/MeetupCard";
+import Link from "next/link";
+import { AppShell } from "@/components/AppShell";
+import { OpenActivityCard, TodayHabitCard } from "@/components/habit/TodayHabitCard";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
-
-async function getParticipantCount(meetupId: string) {
-  const supabase = await createClient();
-  const { data } = await supabase.rpc("get_meetup_participant_count", {
-    meetup_uuid: meetupId,
-  });
-  return (data as number) ?? 0;
-}
+import { COPY } from "@/lib/copy";
+import { getHabitContext } from "@/lib/ieum/habit-context";
 
 export default async function HomePage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const habit = await getHabitContext();
+  if (!habit) return null;
 
-  const { data: profile } = await supabase
-    .from("user_profiles")
-    .select("*")
-    .eq("id", user!.id)
-    .single();
-
-  let recommended: Meetup[] = [];
-  let typeDef: TypeDefinition | null = null;
-
-  if (profile?.type_code) {
-    const { data: td } = await supabase
-      .from("type_definitions")
-      .select("*")
-      .eq("type_code", profile.type_code)
-      .single();
-    typeDef = td as TypeDefinition | null;
-
-    const { data: rules } = await supabase
-      .from("type_category_rules")
-      .select("category")
-      .eq("type_code", profile.type_code)
-      .order("priority");
-
-    const categories = (rules?.map((r) => r.category) ?? []) as MeetupCategory[];
-    const { data: meetups } = await supabase
-      .from("meetups")
-      .select("*")
-      .eq("is_active", true);
-
-    recommended = rankMeetups(
-      (meetups as Meetup[]) ?? [],
-      categories,
-      profile.region,
-      3,
-    );
-  }
-
-  const counts = await Promise.all(
-    recommended.map((m) => getParticipantCount(m.id)),
-  );
+  const { profile, cardType, question, micro, questionAnswered, microAnswered, openActivities, topOpen } =
+    habit;
 
   return (
-    <div className="flex flex-1 flex-col">
-      <Header />
-      <main className="mx-auto w-full max-w-lg px-6 py-10">
-        <Card>
-          <p className="text-gray-600">안녕하세요,</p>
-          <h1 className="mt-1">
-            {profile?.display_name ?? "회원"}님
-          </h1>
-          {typeDef && (
-            <p className="mt-4 text-lg">
-              {typeDef.emoji} {typeDef.title}
-            </p>
-          )}
-          <p className="mt-2 text-gray-600">
-            오늘, 함께할 사람이 있습니다.
-          </p>
-        </Card>
+    <AppShell>
+      <div className="mb-6">
+        <p className="text-sm font-medium text-brand-600">{COPY.brand}</p>
+        <h1 className="mt-1 text-2xl font-bold">
+          {profile?.display_name ?? "회원"}님, {COPY.tagline}
+        </h1>
+      </div>
 
-        {!profile?.test_completed_at && (
-          <Card className="mt-6 border-brand-200 bg-brand-50">
-            <p className="font-medium">이음 타입 테스트를 완료해 주세요</p>
-            <Button href="/test" className="mt-4 w-full">
-              테스트 시작 (2분)
-            </Button>
-          </Card>
-        )}
-
-        {recommended.length > 0 && (
-          <>
-            <h2 className="mb-4 mt-10 text-xl font-semibold">나를 위한 추천</h2>
-            <div className="flex flex-col gap-4">
-              {recommended.map((m, i) => (
-                <MeetupCard
-                  key={m.id}
-                  meetup={m}
-                  participantCount={counts[i]}
-                />
-              ))}
-            </div>
-          </>
-        )}
-
-        <div className="mt-8 flex flex-col gap-3">
-          <Button href="/meetups" variant="outline" className="w-full">
-            전체 모임 보기
+      {!profile?.test_completed_at && (
+        <div className="mb-6 rounded-2xl border border-brand-200 bg-brand-50 p-4">
+          <p className="font-medium">3분만에 이음 코드를 만들어 주세요</p>
+          <Button href="/test" size="md" className="mt-3">
+            시작하기
           </Button>
-          <Button href="/my" variant="secondary" className="w-full">
-            내 모임
-          </Button>
-          {profile?.is_admin && (
-            <Button href="/admin" variant="outline" className="w-full">
-              관리자
-            </Button>
-          )}
         </div>
-      </main>
-    </div>
+      )}
+
+      <section>
+        <p className="mb-3 text-sm text-gray-500">오늘 카드 · 하나만</p>
+        <TodayHabitCard
+          cardType={cardType}
+          question={question}
+          micro={micro}
+          questionAnswered={questionAnswered}
+          microAnswered={microAnswered}
+          topOpen={topOpen}
+        />
+      </section>
+
+      {openActivities.length > 1 && cardType !== "open" && (
+        <section className="mt-10">
+          <h2 className="mb-4 text-lg font-bold">{COPY.openActivity}</h2>
+          <div className="flex flex-col gap-4">
+            {openActivities.slice(0, 2).map((a) => (
+              <OpenActivityCard
+                key={a.id}
+                activity={a}
+                invitationMessage={a.invitation_message}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="mt-10">
+        <Button href="/invite" className="w-full">
+          {COPY.togetherRequest} 만들기
+        </Button>
+        <p className="mt-2 text-center text-xs text-gray-500">{COPY.anonymousNote}</p>
+      </section>
+
+      <nav className="mt-12 grid grid-cols-3 gap-3">
+        <Link
+          href="/recommend"
+          className="rounded-2xl bg-brand-50 py-4 text-center font-medium text-brand-800"
+        >
+          ✨ Discover
+        </Link>
+        <Link
+          href="/together"
+          className="rounded-2xl bg-brand-50 py-4 text-center font-medium text-brand-800"
+        >
+          ❤️ Together
+        </Link>
+        <Link
+          href="/my"
+          className="rounded-2xl bg-brand-50 py-4 text-center font-medium text-brand-800"
+        >
+          📅 Activity
+        </Link>
+      </nav>
+
+      <p className="mt-8 text-center text-xs text-gray-400">
+        푸시 알림(설계): 아침·오후·저녁 오늘의 이음 한 줄
+      </p>
+    </AppShell>
   );
 }

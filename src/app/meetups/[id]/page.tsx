@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { SafeMeetGuide } from "@/components/trust/SafeMeetGuide";
 import { createClient } from "@/lib/supabase/server";
 import { MeetupActions, MeetupDetailInfo } from "@/components/meetup/MeetupActions";
 import { Card } from "@/components/ui/Card";
@@ -43,6 +44,7 @@ export default async function MeetupDetailPage({
 
   let isJoined = false;
   let hasReview = false;
+  let showSafeGuide = false;
   if (user) {
     const { data: part } = await supabase
       .from("participations")
@@ -59,6 +61,13 @@ export default async function MeetupDetailPage({
       .eq("meetup_id", id)
       .maybeSingle();
     hasReview = !!review;
+
+    const { data: prof } = await supabase
+      .from("user_profiles")
+      .select("safe_guide_seen_at")
+      .eq("id", user.id)
+      .maybeSingle();
+    showSafeGuide = isJoined && !prof?.safe_guide_seen_at;
   }
 
   const isFull = participantCount >= m.max_participants;
@@ -71,8 +80,9 @@ export default async function MeetupDetailPage({
       <Header />
       <main className="mx-auto w-full max-w-lg px-6 py-10">
         <Link href="/meetups" className="mb-6 inline-block text-brand-600">
-          ← 모임 목록
+          ← 활동 목록
         </Link>
+        {showSafeGuide && <SafeMeetGuide />}
         <Card>
           <MeetupDetailInfo
             meetup={m}
