@@ -1,6 +1,7 @@
 import { AppShell } from "@/components/AppShell";
 import { AiCoachCard } from "@/components/feed/AiCoachCard";
 import { ProfileEditForm } from "@/components/profile/ProfileEditForm";
+import { AccountSection } from "@/components/profile/AccountSection";
 import { TrustProfileCard } from "@/components/trust/TrustProfileCard";
 import { SocialHealthCard } from "@/components/together/TogetherCards";
 import { Button } from "@/components/ui/Button";
@@ -140,11 +141,7 @@ export default async function MyProfilePage() {
         </Button>
       </Card>
 
-      <form action="/auth/signout" method="post" className="mt-8">
-        <button type="submit" className="w-full text-center text-gray-500 underline">
-          로그아웃
-        </button>
-      </form>
+      <AccountSection />
     </AppShell>
   );
 }

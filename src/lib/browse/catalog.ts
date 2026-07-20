@@ -103,6 +103,15 @@ export function getActivityById(id: string): BrowseActivity | undefined {
   return BROWSE_CATALOG.find((a) => a.id === id);
 }
 
+export function filterByInterestSlugs(
+  catalog: BrowseActivity[],
+  slugs: string[],
+): BrowseActivity[] {
+  if (!slugs.length) return [];
+  const set = new Set(slugs);
+  return catalog.filter((a) => set.has(a.interestSlug));
+}
+
 export function filterActivities(
   catalog: BrowseActivity[],
   filter: BrowseFilter,

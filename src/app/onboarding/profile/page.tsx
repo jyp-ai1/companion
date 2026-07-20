@@ -36,18 +36,20 @@ export default function OnboardingProfilePage() {
         return;
       }
 
-      const { error: updateError } = await supabase
-        .from("user_profiles")
-        .update({
+      const { error: updateError } = await supabase.from("user_profiles").upsert(
+        {
+          id: user.id,
           age_group: ageGroup,
           region: formatRegion(sido, sigungu),
           gender: gender && gender !== "선택 안 함" ? gender : null,
           onboarding_completed: true,
-        })
-        .eq("id", user.id);
+        },
+        { onConflict: "id" },
+      );
 
       if (updateError) {
-        setError("저장에 실패했습니다.");
+        console.error(updateError);
+        setError(`저장에 실패했습니다. (${updateError.message})`);
         return;
       }
 
